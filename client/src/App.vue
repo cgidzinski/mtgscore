@@ -6,10 +6,10 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <router-link to="/scoreboard" class="nav-link">Scoreboard</router-link>
+                        <router-link to="/play" class="nav-link">Play</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/games" class="nav-link">Games</router-link>
+                        <router-link to="/gamelist" class="nav-link">Game List</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link to="/players" class="nav-link">Players</router-link>

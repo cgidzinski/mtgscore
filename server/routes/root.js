@@ -1,24 +1,64 @@
 var DB = require('../models/models');
 module.exports = function(app) {
-    // app.get('/', function(req, res) {
-    //     res.sendFil("Server Working!")
-    // });
+    app.get('/api/getgames', function(req, res) {
+        DB.Game.find({}).populate('players.player').sort([
+            ['date', 'descending']
+        ]).exec(function(error, games) {
+            res.json({ success: true, games: games });
+        })
+    });
+    app.get('/api/getgame', function(req, res) {
+        DB.Game.findOne({ '_id': req.query.id }).populate('players.player').exec(function(error, game) {
+            res.json({ success: true, game: game });
+        })
+    });
+    app.post('/api/updategame', function(req, res) {
+        DB.Game.findOne({ '_id': req.body.gameID }).exec(function(error, game) {
+            if (!game) {
+                res.json({ success: false });
+                return;
+            }
+            for (var i = game.players.length - 1; i >= 0; i--) {
+                if (game.players[i].player == req.body.player.player._id) {
+                    game.players[i] = req.body.player
+                    game.save()
+                    res.json({ success: true });
+                }
+            }
+        })
+    });
+    app.post('/api/endgame', function(req, res) {
+        DB.Game.findOne({ '_id': req.body.gameID }).populate('players.player').exec(function(error, game) {
+            if (!game) {
+                res.json({ success: false });
+                return;
+            }
+            //
+            for (var i = game.players.length - 1; i >= 0; i--) {
+                console.log(game.players[i])
+                for (var k = game.players[i].points.length - 1; k >= 0; k--) {
+                    game.players[i].totalPoints += game.players[i].points[k].value
+                }
+                game.players[i].player.points += game.players[i].totalPoints;
+                game.players[i].player.save()
+            }
+            //
+            //
+            /////Place and save
+            //
+            //
+            game.finished = true;
+            game.save()
+            res.json({ success: true });
+            //
+        })
+    });
+    //
     app.get('/api/getplayers/name', function(req, res) {
         DB.Player.find({}).sort([
             ['name', 'ascending']
         ]).exec(function(error, players) {
             res.json({ success: true, players: players });
-        })
-    });
-    app.post('/api/updateplayer', function(req, res) {
-        DB.Player.findOne({ 'name': req.body.name }).exec(function(error, player) {
-            player.points += req.body.points
-            player.gamesPlayed += 1
-            if (req.body.place == 1) { player.place1 += 1 }
-            if (req.body.place == 2) { player.place2 += 1 }
-            if (req.body.place == 3) { player.place3 += 1 }
-            player.save()
-            res.json({ success: true, player: player });
         })
     });
     app.get('/api/getplayers/points', function(req, res) {
@@ -51,5 +91,20 @@ module.exports = function(app) {
         newPlayer.points = 0;
         newPlayer.save();
         res.json({ success: true, player: newPlayer });
+    });
+    app.post('/api/newGame', function(req, res) {
+        var players = req.body.players;
+        if (!players) {
+            res.json({ success: false });
+            return;
+        }
+        var newGame = new DB.Game()
+        for (var i = players.length - 1; i >= 0; i--) {
+            newGame.players.push({
+                'player': players[i].id
+            })
+        }
+        newGame.save();
+        res.json({ success: true, data: newGame });
     });
 }

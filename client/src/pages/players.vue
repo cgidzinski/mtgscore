@@ -3,16 +3,12 @@
         <h1>Players</h1>
         <div v-for="player in players">
             <div class="card">
-                <h3 class="card-header">{{ player.name }}</h3>
-                <div class="card-block"> Points: {{player.points}}<br> 
-                Games Played: {{player.gamesPlayed}}<br>
-                1st's: {{player.place1}}<br>
-                 2nd's: {{player.place2}}<br>
-                  3rd's: {{player.place3}}<br>
-
-
-
-                 </div>
+                <h3 class="card-header">{{ player.name }} | Points: {{player.points}}</h3>
+                <div class="card-block"> Games Played: {{player.gamesPlayed}}
+                    <br> 1st's: {{player.place1}}
+                    <br> 2nd's: {{player.place2}}
+                    <br> 3rd's: {{player.place3}}
+                    <br> </div>
             </div>
             <br> </div>
         <button type="button" class="btn btn-primary btn-lg btn-block" v-on:click="newPlayerModal()">New Player</button>

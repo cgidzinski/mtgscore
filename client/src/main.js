@@ -6,19 +6,27 @@ import Router from 'vue-router';
 import App from './App.vue';
 //
 import Home from './pages/home.vue';
-import Scoreboard from './pages/scoreboard.vue';
-import Games from './pages/games.vue';
+import Play from './pages/play.vue';
+import Game from './pages/game.vue';
+import Tally from './pages/tally.vue';
+import Gamelist from './pages/gamelist.vue';
 import Players from './pages/players.vue';
 //
 const routes = [{
     path: '/',
     component: Home
 }, {
-    path: '/scoreboard',
-    component: Scoreboard
+    path: '/play',
+    component: Play
 }, {
-    path: '/games',
-    component: Games
+    path: '/gamelist',
+    component: Gamelist
+}, {
+    path: '/game/:id',
+    component: Game
+}, {
+    path: '/tally/:id',
+    component: Tally
 }, {
     path: '/players',
     component: Players

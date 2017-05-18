@@ -11,7 +11,26 @@ var playerSchema = new mongoose.Schema({
     gamesPlayed: { type: Number, default: 0 },
 })
 var Player = mongoose.model('Player', playerSchema);
+// define the schema for our game model
+var gameSchema = new mongoose.Schema({
+    players: [{
+    _id : false ,
+    player: { type: ObjectId, ref: 'Player' },
+    totalPoints: { type: Number, default: 0 },
+    place: { type: Number, default: 0 },
+    points: { type: Array, default: [] },
+    stats: { type: Array, default: [40, 0, 0, 0] }
+    }],
 
+
+
+
+
+    date: { type: Date, default: Date.now() },
+    finished: { type: Boolean, default: false },
+})
+var Game = mongoose.model('Game', gameSchema);
 module.exports = {
-    Player: Player
+    Player: Player,
+    Game: Game
 };

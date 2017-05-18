@@ -22,7 +22,7 @@ app.enable('trust proxy');
 if (!mongoose.connect(config.url)) {
     res.send("DB Fail");
 } // connect to our database
-
+mongoose.set('debug', true);
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
